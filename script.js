@@ -3,8 +3,8 @@
 // 4パターン(A1→B2, B2→A1, A2→B1, B1→A2)をランダムに割り当てる版
 // ==========================================================
 
-// ▼▼▼ 新しく作成したGoogle Apps ScriptのウェブアプリURLに置き換えてください ▼▼▼
-const GAS_URL = "https://script.google.com/macros/s/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/exec";
+// 回答データの送信先(Google Apps Script ウェブアプリ)
+const GAS_URL = "https://script.google.com/macros/s/AKfycbx281034aoqhfXCK5GCGp5NG5nCUlq55IAx2b_zBsBvHVmqtpumdD-1I1abXwPe-GJyDA/exec";
 
 const participantId = "P" + Date.now();
 
