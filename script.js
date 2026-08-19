@@ -1,9 +1,16 @@
-const GAS_URL = "https://script.google.com/macros/s/AKfycbxbrMmOjK78wxN5LUh3AbX7J3RMthpf2fETKnKQ7eB39bOBbjWmBHf-sGCi7oIBpAYC/exec";
+// ==========================================================
+// 改行位置の印象評価実験
+// 4パターン(A1→B2, B2→A1, A2→B1, B1→A2)をランダムに割り当てる版
+// ==========================================================
+
+// ▼▼▼ 新しく作成したGoogle Apps ScriptのウェブアプリURLに置き換えてください ▼▼▼
+const GAS_URL = "https://script.google.com/macros/s/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/exec";
 
 const participantId = "P" + Date.now();
 
 let participant = {};
-let currentIndex = 0;
+let pattern = [];       // その参加者に割り当てられた2ステップの提示順
+let currentIndex = 0;   // 0 = 1問目, 1 = 2問目
 let results = [];
 
 let textStartTime = 0;
@@ -14,51 +21,108 @@ let textPageTime = 0;
 let surveyPageTime = 0;
 let quizPageTime = 0;
 
-const experiments = [
-  {
-    title: "実験文章1",
-    condition: "文字数改行",
-    image: "images/sabaku.png",
-    quiz: [
-      {
-        question: "砂漠で夜に気温が下がる主な理由は何ですか。",
-        choices: ["雨が多いため", "熱をため込みにくいため", "雲が多いため"],
-        correct: "2"
-      },
-      {
-        question: "砂漠では昼と夜でどの程度の気温差が生じることがありますか。",
-        choices: ["5度程度", "10度程度", "20度以上"],
-        correct: "3"
-      },
-      {
-        question: "文章の内容として正しいものはどれですか。",
-        choices: ["防寒対策は不要である", "暑さ対策だけで十分である", "暑さ対策と防寒対策の両方が必要である"],
-        correct: "3"
-      }
-    ]
+// 文章の内容(A=砂漠 / B=タコ)ごとに、2種類の改行条件を用意する。
+// 条件が変わっても文章の内容・クイズ内容は同じ。
+const texts = {
+  sabaku: {
+    label: "文章A",
+    char: {
+      condition: "文字数改行",
+      image: "images/sabaku_char.png",
+      quiz: [
+        {
+          question: "砂漠で夜に気温が下がる主な理由は何ですか。",
+          choices: ["雨が多いため", "熱をため込みにくいため", "雲が多いため"],
+          correct: "2"
+        },
+        {
+          question: "砂漠では昼と夜でどの程度の気温差が生じることがありますか。",
+          choices: ["5度程度", "10度程度", "20度以上"],
+          correct: "3"
+        },
+        {
+          question: "文章の内容として正しいものはどれですか。",
+          choices: ["防寒対策は不要である", "暑さ対策だけで十分である", "暑さ対策と防寒対策の両方が必要である"],
+          correct: "3"
+        }
+      ]
+    },
+    unnatural: {
+      condition: "不自然改行",
+      image: "images/sabaku_unnatural.png",
+      quiz: [
+        {
+          question: "砂漠で夜に気温が下がる主な理由は何ですか。",
+          choices: ["雨が多いため", "熱をため込みにくいため", "雲が多いため"],
+          correct: "2"
+        },
+        {
+          question: "砂漠では昼と夜でどの程度の気温差が生じることがありますか。",
+          choices: ["5度程度", "10度程度", "20度以上"],
+          correct: "3"
+        },
+        {
+          question: "文章の内容として正しいものはどれですか。",
+          choices: ["防寒対策は不要である", "暑さ対策だけで十分である", "暑さ対策と防寒対策の両方が必要である"],
+          correct: "3"
+        }
+      ]
+    }
   },
-  {
-    title: "実験文章2",
-    condition: "不自然改行",
-    image: "images/tako.png",
-    quiz: [
-      {
-        question: "タコの心臓はいくつありますか。",
-        choices: ["1つ", "2つ", "3つ"],
-        correct: "3"
-      },
-      {
-        question: "タコの血液が青く見える理由は何ですか。",
-        choices: ["鉄を多く含むため", "ヘモシアニンを利用しているため", "海水を吸収しているため"],
-        correct: "2"
-      },
-      {
-        question: "文章の内容として正しいものはどれですか。",
-        choices: ["タコは学習能力が低い", "タコは道具を利用することがある", "タコの血液は赤色である"],
-        correct: "2"
-      }
-    ]
+  tako: {
+    label: "文章B",
+    char: {
+      condition: "文字数改行",
+      image: "images/tako_char.png",
+      quiz: [
+        {
+          question: "タコの心臓はいくつありますか。",
+          choices: ["1つ", "2つ", "3つ"],
+          correct: "3"
+        },
+        {
+          question: "タコの血液が青く見える理由は何ですか。",
+          choices: ["鉄を多く含むため", "ヘモシアニンを利用しているため", "海水を吸収しているため"],
+          correct: "2"
+        },
+        {
+          question: "文章の内容として正しいものはどれですか。",
+          choices: ["タコは学習能力が低い", "タコは道具を利用することがある", "タコの血液は赤色である"],
+          correct: "2"
+        }
+      ]
+    },
+    unnatural: {
+      condition: "不自然改行",
+      image: "images/tako_unnatural.png",
+      quiz: [
+        {
+          question: "タコの心臓はいくつありますか。",
+          choices: ["1つ", "2つ", "3つ"],
+          correct: "3"
+        },
+        {
+          question: "タコの血液が青く見える理由は何ですか。",
+          choices: ["鉄を多く含むため", "ヘモシアニンを利用しているため", "海水を吸収しているため"],
+          correct: "2"
+        },
+        {
+          question: "文章の内容として正しいものはどれですか。",
+          choices: ["タコは学習能力が低い", "タコは道具を利用することがある", "タコの血液は赤色である"],
+          correct: "2"
+        }
+      ]
+    }
   }
+};
+
+// 順序効果・内容による偏りを相殺するための4パターン
+// A1→B2, B2→A1, A2→B1, B1→A2 をすべて用意し、参加者ごとにランダムで1つ割り当てる
+const patterns = [
+  [{ content: "sabaku", cond: "char" },      { content: "tako",   cond: "unnatural" }], // A1 → B2
+  [{ content: "tako",   cond: "unnatural" }, { content: "sabaku", cond: "char" }],       // B2 → A1
+  [{ content: "sabaku", cond: "unnatural" }, { content: "tako",   cond: "char" }],       // A2 → B1
+  [{ content: "tako",   cond: "char" },      { content: "sabaku", cond: "unnatural" }]   // B1 → A2
 ];
 
 const sdItems = [
@@ -103,16 +167,29 @@ function startExperiment() {
     smartphoneTime: smartphoneTime
   };
 
+  // 4パターンの中からランダムに1つを選び、この参加者に割り当てる
+  pattern = patterns[Math.floor(Math.random() * patterns.length)];
+
   currentIndex = 0;
   results = [];
   loadText();
 }
 
-function loadText() {
-  const exp = experiments[currentIndex];
+function getCurrentExp() {
+  const step = pattern[currentIndex];
+  return {
+    step: step,
+    def: texts[step.content][step.cond],
+    label: texts[step.content].label
+  };
+}
 
-  document.getElementById("textTitle").textContent = exp.title;
-  document.getElementById("textImage").src = exp.image;
+function loadText() {
+  const { label } = getCurrentExp();
+
+  document.getElementById("textTitle").textContent = `文章${currentIndex + 1}`;
+  document.getElementById("textImage").src = getCurrentExp().def.image;
+  document.getElementById("textImage").alt = label;
 
   showPage("textPage");
 
@@ -166,12 +243,12 @@ function goQuiz() {
 
   surveyPageTime = Math.round((Date.now() - surveyStartTime) / 1000);
 
-  const exp = experiments[currentIndex];
+  const { def } = getCurrentExp();
   const quizArea = document.getElementById("quizArea");
 
   quizArea.innerHTML = "";
 
-  exp.quiz.forEach((q, index) => {
+  def.quiz.forEach((q, index) => {
     const div = document.createElement("div");
     div.className = "question";
 
@@ -205,11 +282,11 @@ function saveResult() {
 
   quizPageTime = Math.round((Date.now() - quizStartTime) / 1000);
 
-  const exp = experiments[currentIndex];
+  const { step, def, label } = getCurrentExp();
 
   let quizScore = 0;
 
-  exp.quiz.forEach((q, index) => {
+  def.quiz.forEach((q, index) => {
     const answer = document.querySelector(`input[name="q${index}"]:checked`).value;
     if (answer === q.correct) {
       quizScore++;
@@ -227,7 +304,9 @@ function saveResult() {
     place: participant.place,
     readingHabit: participant.readingHabit,
     smartphoneTime: participant.smartphoneTime,
-    condition: exp.condition,
+    content: label,                          // 文章内容(文章A / 文章B)
+    order: `${currentIndex + 1}問目`,         // 提示順(1問目 / 2問目)
+    condition: def.condition,                // 文節改行/不自然な改行
     quizScore: quizScore,
     readability: sdAnswers[0],
     visibility: sdAnswers[1],
@@ -242,8 +321,7 @@ function saveResult() {
 
   currentIndex++;
 
-  
-  if (currentIndex < experiments.length) {
+  if (currentIndex < pattern.length) {
     loadText();
   } else {
     showPage("endPage");
