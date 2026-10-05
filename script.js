@@ -6,7 +6,7 @@
 // ==========================================================
 
 // 回答データの送信先(Google Apps Script ウェブアプリ)
-const GAS_URL = "https://script.google.com/macros/s/AKfycbx281034aoqhfXCK5GCGp5NG5nCUlq55IAx2b_zBsBvHVmqtpumdD-1I1abXwPe-GJyDA/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxHbEr5y7tHNF74-X6UqOJIS62ScXvDYhMhgrpNNtViumbZ2kYuYA8zThC7RcrKoaPftw/exec";
 
 const participantId = "P" + Date.now();
 
@@ -314,6 +314,7 @@ function saveResult() {
   });
 
   results.push({
+    patternNo: patternNo,                    // 保存先シート(パターン1〜4)の振り分けに使う
     participantId: participantId,
     age: participant.age,
     gender: participant.gender,

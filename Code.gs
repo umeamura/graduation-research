@@ -47,17 +47,12 @@ const HEADERS = [
 
 function doPost(e) {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-
-    // ヘッダーが無ければ1行目に追加する
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow(HEADERS);
-    }
-
     const rows = JSON.parse(e.postData.contents);
     const now = Utilities.formatDate(new Date(), "Asia/Tokyo", "yyyy/MM/dd H:mm:ss");
 
     rows.forEach(function (row) {
+      // パターンごとのシート(パターン1〜4)に保存する
+      const sheet = getPatternSheet(row.patternNo);
       sheet.appendRow([
         row.participantId,
         row.age,
@@ -91,6 +86,21 @@ function doPost(e) {
       .createTextOutput(JSON.stringify({ result: "error", message: err.message }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+// 「パターン1」〜「パターン4」のシートを返す。無ければ作成し、1行目にヘッダーを追加する。
+// パターン番号が無いデータ(古いページからの送信など)は「パターン不明」シートに入れる。
+function getPatternSheet(patternNo) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const name = patternNo ? "パターン" + patternNo : "パターン不明";
+  let sheet = ss.getSheetByName(name);
+  if (!sheet) {
+    sheet = ss.insertSheet(name);
+  }
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(HEADERS);
+  }
+  return sheet;
 }
 
 // ブラウザでこのURLを直接開いた時の動作確認用（任意）
