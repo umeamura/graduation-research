@@ -1,6 +1,8 @@
 // ==========================================================
 // 改行位置の印象評価実験
-// 4パターン(A1→B2, B2→A1, A2→B1, B1→A2)をランダムに割り当てる版
+// 4パターン(A1→B2, B2→A1, A2→B1, B1→A2)をURLで決め打ちで割り当てる版
+//   参加者には pattern1.html 〜 pattern4.html を渡す(各ページが index.html?p=番号 に移動する)
+//   pattern1 → A1→B2 / pattern2 → B2→A1 / pattern3 → A2→B1 / pattern4 → B1→A2
 // ==========================================================
 
 // 回答データの送信先(Google Apps Script ウェブアプリ)
@@ -117,13 +119,19 @@ const texts = {
 };
 
 // 順序効果・内容による偏りを相殺するための4パターン
-// A1→B2, B2→A1, A2→B1, B1→A2 をすべて用意し、参加者ごとにランダムで1つ割り当てる
+// A1→B2, B2→A1, A2→B1, B1→A2 をすべて用意し、参加者ごとにURLの p で1つ指定する
 const patterns = [
   [{ content: "sabaku", cond: "char" },      { content: "tako",   cond: "unnatural" }], // A1 → B2
   [{ content: "tako",   cond: "unnatural" }, { content: "sabaku", cond: "char" }],       // B2 → A1
   [{ content: "sabaku", cond: "unnatural" }, { content: "tako",   cond: "char" }],       // A2 → B1
   [{ content: "tako",   cond: "char" },      { content: "sabaku", cond: "unnatural" }]   // B1 → A2
 ];
+
+// URLの ?p=1〜4 から、この参加者に提示するパターン番号を決める(不正なら null)
+const patternNo = (() => {
+  const p = Number(new URLSearchParams(location.search).get("p"));
+  return Number.isInteger(p) && p >= 1 && p <= patterns.length ? p : null;
+})();
 
 const sdItems = [
   ["読みにくい", "読みやすい"],
@@ -141,6 +149,14 @@ function showPage(id) {
 
   document.getElementById(id).classList.remove("hidden");
   window.scrollTo(0, 0);
+}
+
+function goStart() {
+  if (patternNo === null) {
+    alert("パターンが指定されていません。pattern1.html〜pattern4.html のいずれかから開いてください。");
+    return;
+  }
+  showPage("attributePage");
 }
 
 function goAttribute() {
@@ -167,8 +183,8 @@ function startExperiment() {
     smartphoneTime: smartphoneTime
   };
 
-  // 4パターンの中からランダムに1つを選び、この参加者に割り当てる
-  pattern = patterns[Math.floor(Math.random() * patterns.length)];
+  // URLで指定されたパターンをこの参加者に割り当てる
+  pattern = patterns[patternNo - 1];
 
   currentIndex = 0;
   results = [];
