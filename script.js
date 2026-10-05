@@ -323,7 +323,7 @@ function saveResult() {
     smartphoneTime: participant.smartphoneTime,
     content: label,                          // 文章内容(文章A / 文章B)
     order: `${currentIndex + 1}問目`,         // 提示順(1問目 / 2問目)
-    condition: def.condition,                // 文節改行/不自然な改行
+    condition: def.condition,                // 改行条件(文字数改行 / 不自然改行)
     quizScore: quizScore,
     readability: sdAnswers[0],
     visibility: sdAnswers[1],
