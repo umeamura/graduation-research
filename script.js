@@ -156,7 +156,7 @@ function goStart() {
     alert("パターンが指定されていません。pattern1.html〜pattern4.html のいずれかから開いてください。");
     return;
   }
-  showPage("attributePage");
+  showPage("consentPage");
 }
 
 function goAttribute() {
