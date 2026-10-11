@@ -156,6 +156,12 @@ function goStart() {
     alert("パターンが指定されていません。pattern1.html〜pattern4.html のいずれかから開いてください。");
     return;
   }
+  // 同意書の同意日・説明日に今日の日付を表示する
+  const now = new Date();
+  const today = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`;
+  document.querySelectorAll(".todayDate").forEach(el => {
+    el.textContent = today;
+  });
   showPage("consentPage");
 }
 
