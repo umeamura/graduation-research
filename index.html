@@ -3,92 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>改行位置の印象評価実験</title>
+  <title>文章の読みやすさに関する実験</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div id="startPage" class="page">
-  <h1>改行位置の印象評価実験</h1>
+  <h1>文章の読みやすさに関する実験</h1>
   <p>
     ご協力いただきありがとうございます。
-    この実験では、文章の改行位置に対する印象を調査します。
-    表示される文章を読んだ後、印象評価と理解度テストに回答してください。
+    この実験では、スマートフォンで文章を読んだときの印象を調査します。
+    表示される文章を読んだ後、アンケートと簡単な質問に回答してください。
   </p>
   <p>所要時間は5分程度です。</p>
    <button onclick="goStart()">開始する</button>
-</div>
-
-<div id="consentPage" class="page hidden">
-  <h2>同意取得に際しての説明文</h2>
-  <p>以下の説明をお読みいただき、内容をご理解のうえ、同意いただける場合のみ下の同意書にチェックを入れてお進みください。</p>
-
-  <h3>1. 研究の名称</h3>
-  <p>スマートフォンの文章の読みやすさにおける改行位置の効果の検討</p>
-
-  <h3>2. 研究の目的</h3>
-  <p>スマートフォンで文章を読むときに、改行の位置が読みやすさや文章の理解にどのような影響を与えるかを調べます。</p>
-
-  <h3>3. 研究の方法</h3>
-  <p>
-    2つの文章を読み、それぞれについて改行のされ方の印象評価(6項目)と、内容に関する簡単な問題(3問)に回答していただきます。
-    所要時間は5分程度です。文章を読んでいる時間と各画面の回答時間を記録します。
-  </p>
-
-  <h3>4. 参加の自由と中止</h3>
-  <p>
-    参加するかどうかは、あなたの自由な判断で決めていただけます。参加しない場合や、研究の途中で中止を申し出た場合でも、不利益を受けることは一切ありません。
-    途中でページを閉じた場合、それまでの回答は送信されません。
-  </p>
-
-  <h3>5. 個人情報とデータの取り扱い</h3>
-  <p>
-    氏名・住所・生年月日など、個人を特定できる情報は収集しません。
-    収集するのは、年齢・性別などの属性、回答内容、回答時間です。
-    データは研究目的(卒業研究および学内での発表)にのみ使用し、統計的に処理した結果のみを公表します。
-    匿名で収集するため、送信後に特定の方のデータを削除することはできません。
-  </p>
-
-  <h3>6. 問い合わせ先</h3>
-  <p>
-    研究分担者:京都橘大学 梅村海璃<br>
-    連絡先:umemurakairi@gmail.com
-  </p>
-
-  <div class="consent-form">
-    <p class="form-no">様式4</p>
-    <h2>研究参加に関する同意書</h2>
-    <p>研究責任者<br><span class="blank-line"></span> 殿</p>
-    <p>
-      私は研究分担者 梅村海璃 から「スマートフォンの文章の読みやすさにおける改行位置の効果の検討」の研究についての目的、方法などを上記の同意取得に際しての説明文によって詳細な説明を受け、私の自主判断から、この研究に参加することを同意します。
-      ただし、研究の途中で中止を要請することも自由であることを理解しました。
-    </p>
-    <p>
-      同意日:<span class="todayDate"></span><br>
-      説明者(研究分担者):梅村海璃<br>
-      説明日:<span class="todayDate"></span>
-    </p>
-    <p class="note">※本研究は匿名で行うため、氏名・住所・生年月日の記入と署名に代えて、下のチェックにより同意を確認します。</p>
-
-    <label class="consent-check">
-      <input type="checkbox" id="consentCheck" onchange="document.getElementById('consentButton').disabled = !this.checked">
-      <span>上記の内容を理解し、この研究に参加することに同意します。</span>
-    </label>
-  </div>
-
-  <button id="consentButton" onclick="showPage('attributePage')" disabled>同意して次へ</button>
-  <button class="secondary" onclick="showPage('declinePage')">同意しない</button>
-</div>
-
-<div id="declinePage" class="page hidden">
-  <h2>ご確認ありがとうございました</h2>
-  <p>実験には参加されませんでした。データは一切送信されていません。このページを閉じてください。</p>
 </div>
 
 <div id="attributePage" class="page hidden">
 
 
   <h2>属性入力</h2>
+
+  <label>参加者番号(実験者がお伝えします)</label>
+  <input type="number" id="participantNo" placeholder="例:1">
 
   <label>年齢</label>
   <input type="number" id="age" placeholder="例：21">

@@ -53,63 +53,6 @@ button {
   color: white;
 }
 
-h3 {
-  margin: 24px 0 0;
-  font-size: 17px;
-}
-
-.consent-form {
-  margin-top: 32px;
-  padding: 16px;
-  border: 1px solid #222;
-}
-
-.consent-form .form-no {
-  margin: 0;
-  font-size: 13px;
-}
-
-.consent-form h2 {
-  margin-top: 4px;
-}
-
-.blank-line {
-  display: inline-block;
-  width: 160px;
-  border-bottom: 1px solid #222;
-}
-
-.consent-form .note {
-  font-size: 14px;
-  color: #555;
-}
-
-.consent-check {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-top: 28px;
-  padding: 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-
-.consent-check input {
-  width: auto;
-  margin: 4px 0 0;
-}
-
-button:disabled {
-  background: #aaa;
-}
-
-button.secondary {
-  margin-top: 12px;
-  background: white;
-  color: #222;
-  border: 1px solid #222;
-}
-
 #textImage {
   width: 100%;
   max-width: 390px;

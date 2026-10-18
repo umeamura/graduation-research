@@ -156,13 +156,7 @@ function goStart() {
     alert("パターンが指定されていません。pattern1.html〜pattern4.html のいずれかから開いてください。");
     return;
   }
-  // 同意書の同意日・説明日に今日の日付を表示する
-  const now = new Date();
-  const today = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`;
-  document.querySelectorAll(".todayDate").forEach(el => {
-    el.textContent = today;
-  });
-  showPage("consentPage");
+  showPage("attributePage");
 }
 
 function goAttribute() {
@@ -170,18 +164,20 @@ function goAttribute() {
 }
 
 function startExperiment() {
+  const participantNo = document.getElementById("participantNo").value;
   const age = document.getElementById("age").value;
   const gender = document.getElementById("gender").value;
   const place = document.getElementById("place").value;
   const readingHabit = document.getElementById("readingHabit").value;
   const smartphoneTime = document.getElementById("smartphoneTime").value;
 
-  if (!age || !gender || !place || !readingHabit || !smartphoneTime) {
+  if (!participantNo || !age || !gender || !place || !readingHabit || !smartphoneTime) {
     alert("すべての項目に回答してください。");
     return;
   }
 
   participant = {
+    participantNo: participantNo,             // 同意書(Googleフォーム)と対応づける番号
     age: age,
     gender: gender,
     place: place,
@@ -321,6 +317,7 @@ function saveResult() {
 
   results.push({
     patternNo: patternNo,                    // 保存先シート(パターン1〜4)の振り分けに使う
+    participantNo: participant.participantNo,
     participantId: participantId,
     age: participant.age,
     gender: participant.gender,

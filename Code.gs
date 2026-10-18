@@ -23,6 +23,7 @@
 // ==========================================================
 
 const HEADERS = [
+  "参加者番号",
   "被験者番号",
   "年齢",
   "性別",
@@ -54,6 +55,7 @@ function doPost(e) {
       // パターンごとのシート(パターン1〜4)に保存する
       const sheet = getPatternSheet(row.patternNo);
       sheet.appendRow([
+        row.participantNo,
         row.participantId,
         row.age,
         row.gender,
