@@ -164,20 +164,18 @@ function goAttribute() {
 }
 
 function startExperiment() {
-  const participantNo = document.getElementById("participantNo").value;
   const age = document.getElementById("age").value;
   const gender = document.getElementById("gender").value;
   const place = document.getElementById("place").value;
   const readingHabit = document.getElementById("readingHabit").value;
   const smartphoneTime = document.getElementById("smartphoneTime").value;
 
-  if (!participantNo || !age || !gender || !place || !readingHabit || !smartphoneTime) {
+  if (!age || !gender || !place || !readingHabit || !smartphoneTime) {
     alert("すべての項目に回答してください。");
     return;
   }
 
   participant = {
-    participantNo: participantNo,             // 同意書(Googleフォーム)と対応づける番号
     age: age,
     gender: gender,
     place: place,
@@ -317,7 +315,7 @@ function saveResult() {
 
   results.push({
     patternNo: patternNo,                    // 保存先シート(パターン1〜4)の振り分けに使う
-    participantNo: participant.participantNo,
+    participantNo: "",                       // 参加者番号は実験者がシートに手で記入する(同意フォームと対応づける)
     participantId: participantId,
     age: participant.age,
     gender: participant.gender,
@@ -344,7 +342,6 @@ function saveResult() {
   if (currentIndex < pattern.length) {
     loadText();
   } else {
-    document.getElementById("endParticipantNo").textContent = participant.participantNo;
     showPage("endPage");
   }
 }
