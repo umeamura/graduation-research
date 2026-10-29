@@ -1,5 +1,5 @@
 // ==========================================================
-// 改行位置の印象評価実験
+// 文章の読みやすさに関する実験(研究上は改行位置の印象評価実験)
 // 4パターン(A1→B2, B2→A1, A2→B1, B1→A2)をURLで決め打ちで割り当てる版
 //   参加者には pattern1.html 〜 pattern4.html を渡す(各ページが index.html?p=番号 に移動する)
 //   pattern1 → A1→B2 / pattern2 → B2→A1 / pattern3 → A2→B1 / pattern4 → B1→A2
@@ -344,6 +344,7 @@ function saveResult() {
   if (currentIndex < pattern.length) {
     loadText();
   } else {
+    document.getElementById("endParticipantNo").textContent = participant.participantNo;
     showPage("endPage");
   }
 }

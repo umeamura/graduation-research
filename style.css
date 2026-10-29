@@ -111,3 +111,14 @@ button {
 input[type="radio"] {
   transform: scale(1.2);
 }
+.withdraw-box {
+  margin-top: 28px;
+  padding: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.withdraw-box p {
+  font-size: 14px;
+}
